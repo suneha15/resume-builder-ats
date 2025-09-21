@@ -1,103 +1,466 @@
-import Image from "next/image";
+'use client';
+
+import { 
+  Box, 
+  Container, 
+  Heading, 
+  Text, 
+  Button, 
+  HStack,
+  Icon,
+  SimpleGrid,
+  Stack
+} from '@chakra-ui/react';
+import { SignInButton, SignUpButton, UserButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { FaFileAlt, FaRobot, FaSearch, FaDownload } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  const features = [
+    {
+      icon: FaFileAlt,
+      title: 'Student-Friendly Builder',
+      description: 'Easy-to-use form designed specifically for young students to create their first resume'
+    },
+    {
+      icon: FaRobot,
+      title: 'AI Guidance & Suggestions',
+      description: 'Get personalized AI recommendations based on job descriptions to improve your resume'
+    },
+    {
+      icon: FaSearch,
+      title: 'Smart ATS Scanner',
+      description: 'Check how well your resume matches job requirements and get improvement tips'
+    },
+    {
+      icon: FaDownload,
+      title: 'Professional PDF Export',
+      description: 'Download your polished resume as a professional PDF ready for applications'
+    }
+  ];
+
+  return (
+    <Box minH="100vh" display="flex" flexDirection="column">
+      {/* Header */}
+      <Box bg="brand.500" color="white" py={4}>
+        <Container maxW="container.xl">
+          <HStack justifyContent="space-between">
+            <Heading size="lg">Speakhire Resume Builder</Heading>
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
+            <SignedOut>
+              <HStack gap={4}>
+                <SignInButton mode="modal">
+                  <Button variant="outline" colorScheme="whiteAlpha">
+                    Sign In
+                  </Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button colorScheme="whiteAlpha">
+                    Sign Up
+                  </Button>
+                </SignUpButton>
+              </HStack>
+            </SignedOut>
+          </HStack>
+        </Container>
+      </Box>
+
+      {/* Hero Section - Centered */}
+      <Box flex="1" display="flex" alignItems="center" justifyContent="center" py={20}>
+        <Container maxW="container.xl">
+          <Stack gap={8} textAlign="center" alignItems="center">
+            <Box
+              opacity={0}
+              transform="translateY(40px)"
+              animation="fadeInUp 1s ease-out 0.2s forwards"
+              css={{
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(40px)'
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                  }
+                }
+              }}
+            >
+              <Heading 
+                size="2xl" 
+                color="brand.500" 
+                maxW="4xl"
+                _hover={{
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease'
+                }}
+                transition="transform 0.3s ease"
+              >
+                Build Your First Resume with AI Guidance
+              </Heading>
+            </Box>
+            <Box
+              opacity={0}
+              transform="translateY(30px)"
+              animation="fadeInUp 1s ease-out 0.4s forwards"
+              css={{
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(30px)'
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                  }
+                }
+              }}
+            >
+              <Text fontSize="xl" color="gray.600" maxW="2xl">
+                Perfect for students aged 12-16! Get AI-powered guidance to create your first professional resume. 
+
+              </Text>
+            </Box>
+            <Box
+              opacity={0}
+              transform="translateY(20px)"
+              animation="fadeInUp 1s ease-out 0.6s forwards"
+              css={{
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(20px)'
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                  }
+                }
+              }}
+            >
+              <Stack gap={4}>
+                <SignedIn>
+                  <Link href="/dashboard">
+                    <Button 
+                      size="lg" 
+                      colorScheme="brand"
+                      _hover={{
+                        transform: 'translateY(-2px) scale(1.05)',
+                        boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }}
+                      transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                    >
+                      Go to Dashboard
+                    </Button>
+                  </Link>
+                </SignedIn>
+                <SignedOut>
+                  <HStack gap={4} justifyContent="center" flexWrap="wrap">
+                    <SignUpButton mode="modal">
+                      <Button 
+                        size="lg" 
+                        colorScheme="brand"
+                        _hover={{
+                          transform: 'translateY(-2px) scale(1.05)',
+                          boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}
+                        transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                      >
+                        Start Building My Resume
+                      </Button>
+                    </SignUpButton>
+                    <SignInButton mode="modal">
+                      <Button 
+                        size="lg" 
+                        variant="outline"
+                        _hover={{
+                          transform: 'translateY(-2px) scale(1.05)',
+                          boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}
+                        transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                      >
+                        Sign In
+                      </Button>
+                    </SignInButton>
+                  </HStack>
+                </SignedOut>
+              </Stack>
+            </Box>
+          </Stack>
+        </Container>
+      </Box>
+
+      {/* Student Focus Section */}
+      <Box bg="brand.50" py={16}>
+        <Container maxW="container.xl">
+          <Stack gap={8} textAlign="center" alignItems="center">
+            <Box
+              opacity={0}
+              transform="translateY(30px)"
+              animation="fadeInUp 0.8s ease-out 0.2s forwards"
+              css={{
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(30px)'
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                  }
+                }
+              }}
+            >
+              <Heading size="xl" color="brand.600" maxW="4xl">
+                Designed Specifically for Young Students
+              </Heading>
+              <Text fontSize="lg" color="brand.700" maxW="3xl" mt={4}>
+                No experience needed! Our AI guides you through every step, from basic information 
+                to professional bullet points that match any job description.
+              </Text>
+            </Box>
+            <Box
+              opacity={0}
+              transform="translateY(20px)"
+              animation="fadeInUp 0.8s ease-out 0.4s forwards"
+              css={{
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(20px)'
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                  }
+                }
+              }}
+            >
+              <Text fontSize="md" color="brand.600" maxW="2xl">
+                ✨ Perfect for ages 12-16 • 🎯 AI-powered job matching • 📊 ATS score feedback • 🚀 Land your first opportunity
+              </Text>
+            </Box>
+          </Stack>
+        </Container>
+      </Box>
+
+      {/* Features Section - Centered */}
+      <Box bg="gray.50" py={20}>
+        <Container maxW="container.xl">
+          <Stack gap={12} textAlign="center" alignItems="center">
+            <Box
+              opacity={0}
+              transform="translateY(30px)"
+              animation="fadeInUp 0.8s ease-out forwards"
+              css={{
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(30px)'
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                  }
+                }
+              }}
+            >
+              <Heading size="xl" maxW="3xl">
+                Everything Young Students Need for Their First Resume
+              </Heading>
+            </Box>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={8} w="full" maxW="6xl">
+              {features.map((feature, index) => (
+                <Box 
+                  key={index} 
+                  bg="white" 
+                  shadow="md" 
+                  p={6} 
+                  borderRadius="md" 
+                  textAlign="center"
+                  opacity={0}
+                  transform="translateY(50px)"
+                  animation={`fadeInUp 0.6s ease-out ${index * 0.1 + 0.3}s forwards`}
+                  _hover={{
+                    transform: 'translateY(-8px) scale(1.02)',
+                    shadow: 'xl',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    _before: {
+                      left: '100%'
+                    }
+                  }}
+                  transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                  cursor="pointer"
+                  position="relative"
+                  overflow="hidden"
+                  _before={{
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: '-100%',
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+                    transition: 'left 0.5s'
+                  }}
+css={{
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(50px)'
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                  }
+                }
+              }}
+                >
+                  <Box 
+                    mb={4}
+                    _hover={{
+                      transform: 'scale(1.1) rotate(5deg)',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
+                    transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                  >
+                    <Icon 
+                      as={feature.icon} 
+                      boxSize={12} 
+                      color="brand.500"
+                      _hover={{
+                        color: 'brand.600',
+                        filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
+                      }}
+                      transition="all 0.3s ease"
+                    />
+                  </Box>
+                  <Heading 
+                    size="md" 
+                    mb={2}
+                    _hover={{
+                      color: 'brand.600',
+                      transition: 'color 0.3s ease'
+                    }}
+                    transition="color 0.3s ease"
+                  >
+                    {feature.title}
+                  </Heading>
+                  <Text 
+                    color="gray.600"
+                    _hover={{
+                      color: 'gray.700',
+                      transition: 'color 0.3s ease'
+                    }}
+                    transition="color 0.3s ease"
+                  >
+                    {feature.description}
+                  </Text>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Stack>
+        </Container>
+      </Box>
+
+      {/* CTA Section - Centered */}
+      <Box bg="brand.500" color="white" py={20}>
+        <Container maxW="container.xl">
+          <Stack gap={6} textAlign="center" alignItems="center">
+            <Box
+              opacity={0}
+              transform="translateY(30px)"
+              animation="fadeInUp 0.8s ease-out 0.2s forwards"
+              css={{
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(30px)'
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                  }
+                }
+              }}
+            >
+              <Heading 
+                size="xl" 
+                maxW="3xl"
+                _hover={{
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.3s ease'
+                }}
+                transition="transform 0.3s ease"
+              >
+                Ready to Create Your First Professional Resume?
+              </Heading>
+            </Box>
+            <Box
+              opacity={0}
+              transform="translateY(20px)"
+              animation="fadeInUp 0.8s ease-out 0.4s forwards"
+              css={{
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(20px)'
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                  }
+                }
+              }}
+            >
+              <Text fontSize="lg" maxW="2xl">
+                Join hundreds of students who have successfully created their first resumes 
+                and landed amazing opportunities with our AI-powered guidance.
+              </Text>
+            </Box>
+            <Box
+              opacity={0}
+              transform="translateY(20px)"
+              animation="fadeInUp 0.8s ease-out 0.6s forwards"
+              css={{
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(20px)'
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                  }
+                }
+              }}
+            >
+              <SignedOut>
+                <SignUpButton mode="modal">
+                    <Button 
+                      size="lg" 
+                      colorScheme="whiteAlpha"
+                      _hover={{
+                        transform: 'translateY(-3px) scale(1.05)',
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }}
+                      transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                    >
+                      Create My First Resume
+                    </Button>
+                </SignUpButton>
+              </SignedOut>
+            </Box>
+          </Stack>
+        </Container>
+      </Box>
+    </Box>
   );
 }

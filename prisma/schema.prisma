@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  clerkUserId  String   @unique @map("clerk_user_id")
+  email        String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  
+  resumes          Resume[]
+  jobDescriptions  JobDescription[]
+  
+  @@map("users")
+}
+
+model Resume {
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id")
+  title           String
+  personalInfo    Json     @default("{}") @map("personal_info")
+  experiences     Json     @default("[]")
+  education       Json     @default("[]")
+  skills          Json     @default("[]")
+  summary         String?
+  jobDescription  String?  @map("job_description")
+  aiSuggestions   String?  @map("ai_suggestions")
+  atsScore        Int?     @map("ats_score")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobDescriptions JobDescription[]
+  
+  @@map("resumes")
+}
+
+model JobDescription {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  resumeId    String   @map("resume_id")
+  jobTitle    String   @map("job_title")
+  company     String
+  description String
+  atsResult   Json     @default("{}") @map("ats_result")
+  createdAt   DateTime @default(now()) @map("created_at")
+  
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  
+  @@map("job_descriptions")
+}
