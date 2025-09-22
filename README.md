@@ -2,7 +2,7 @@
 
 A modern Next.js application specifically designed for students aged 12-16 to create their first professional resumes with AI guidance, job description matching, and ATS (Applicant Tracking System) optimization. Features intelligent suggestions and persistent database storage.
 
-<!-- Deployment trigger -->
+<!-- Deployment trigger - auth fixes applied -->
 
 ## 🚀 Current Features
 
