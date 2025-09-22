@@ -10,6 +10,20 @@ interface Experience {
   current?: boolean;
 }
 
+interface Education {
+  institution: string;
+  degree: string;
+  field: string;
+  gpa?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+interface Skill {
+  name: string;
+  level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
+}
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 export async function POST(request: NextRequest) {
@@ -144,7 +158,7 @@ export async function POST(request: NextRequest) {
 
       // Education
       resumeText += 'EDUCATION\n';
-      education.forEach(edu => {
+      education.forEach((edu: Education) => {
         if (edu.institution && edu.degree) {
           resumeText += `${edu.degree} in ${edu.field} from ${edu.institution}\n`;
           if (edu.gpa) resumeText += `GPA: ${edu.gpa}\n`;
@@ -154,7 +168,7 @@ export async function POST(request: NextRequest) {
 
       // Skills
       resumeText += 'SKILLS\n';
-      skills.forEach(skill => {
+      skills.forEach((skill: Skill) => {
         if (skill.name) {
           resumeText += `${skill.name} (${skill.level})\n`;
         }
