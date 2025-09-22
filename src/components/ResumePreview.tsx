@@ -60,8 +60,8 @@ export default function ResumePreview({
   education,
   skills,
   aiSuggestions,
-  onEdit: _,
-  onDownload: __
+  onEdit: _onEdit, // eslint-disable-line @typescript-eslint/no-unused-vars
+  onDownload: _onDownload // eslint-disable-line @typescript-eslint/no-unused-vars
 }: ResumePreviewProps) {
 
   const formatDate = (dateString: string) => {

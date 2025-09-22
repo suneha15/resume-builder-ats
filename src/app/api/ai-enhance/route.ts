@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+interface Experience {
+  company: string;
+  position: string;
+  description?: string;
+  startDate?: string;
+  endDate?: string;
+  current?: boolean;
+}
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 export async function POST(request: NextRequest) {
@@ -125,7 +134,7 @@ export async function POST(request: NextRequest) {
 
       // Experience
       resumeText += 'EXPERIENCE\n';
-      experiences.forEach(exp => {
+      experiences.forEach((exp: Experience) => {
         if (exp.company && exp.position) {
           resumeText += `${exp.position} at ${exp.company}\n`;
           if (exp.description) resumeText += `${exp.description}\n`;
