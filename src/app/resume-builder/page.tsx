@@ -16,6 +16,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ATSScanner from '@/components/ATSScanner';
 import ResumePreview from '@/components/ResumePreview';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 
 type Section = 'contact' | 'job-description' | 'experience' | 'education' | 'skills' | 'summary' | 'ats' | 'preview';
 
@@ -425,6 +426,7 @@ function SkillForm({
 export default function ResumeBuilder() {
   const { user, isLoaded } = useUser();
   const searchParams = useSearchParams();
+  const { addNotification } = useNotificationContext();
   
   // Form state
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
@@ -532,11 +534,21 @@ export default function ResumeBuilder() {
         setSaveStatus('Resume loaded for preview');
       } else {
         console.error('Failed to load resume for preview, status:', response.status);
-        alert('Failed to load resume for preview. Please try again.');
+        addNotification({
+          title: 'Preview Failed',
+          description: 'Failed to load resume for preview. Please try again.',
+          status: 'error',
+          duration: 4000,
+        });
       }
     } catch (error) {
       console.error('Error loading resume for preview:', error);
-      alert('Error loading resume for preview. Please try again.');
+      addNotification({
+        title: 'Preview Error',
+        description: 'Error loading resume for preview. Please try again.',
+        status: 'error',
+        duration: 4000,
+      });
     } finally {
       setIsLoadingPreview(false);
     }
@@ -947,19 +959,34 @@ export default function ResumeBuilder() {
         setSaveStatus('Resume saved to database successfully!');
         setTimeout(() => setSaveStatus(''), 3000);
         
-        // Show success alert similar to PDF download
-        alert('Resume saved to your account successfully! You can access it anytime from your dashboard.');
+        // Show success toast
+        addNotification({
+          title: 'Resume Saved Successfully!',
+          description: 'Your resume has been saved to your account. You can access it anytime from your dashboard.',
+          status: 'success',
+          duration: 4000,
+        });
       } else {
         const errorData = await response.json();
         setSaveStatus(`Error saving resume: ${errorData.error || 'Unknown error'}`);
         setTimeout(() => setSaveStatus(''), 5000);
-        alert(`Error saving resume: ${errorData.error || 'Unknown error'}`);
+        addNotification({
+          title: 'Save Failed',
+          description: `Error saving resume: ${errorData.error || 'Unknown error'}`,
+          status: 'error',
+          duration: 5000,
+        });
       }
     } catch (error) {
       console.error('Error saving resume:', error);
       setSaveStatus('Error saving resume - check your database connection');
       setTimeout(() => setSaveStatus(''), 5000);
-      alert('Error saving resume - check your database connection. Please try again.');
+      addNotification({
+        title: 'Connection Error',
+        description: 'Error saving resume - check your database connection. Please try again.',
+        status: 'error',
+        duration: 5000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -1010,7 +1037,7 @@ export default function ResumeBuilder() {
       setCurrentSection('contact');
       setCurrentResumeId(null);
       setIsNewResume(true);
-      setSaveStatus('New resume created');
+      setSaveStatus('New resume addNotificationd');
       setTimeout(() => setSaveStatus(''), 3000);
     }
   };
@@ -1269,11 +1296,21 @@ export default function ResumeBuilder() {
       pdf.save(fileName);
       
       console.log('PDF generated successfully:', fileName);
-      alert('Resume PDF downloaded and saved to your account!');
+      addNotification({
+        title: 'PDF Downloaded Successfully!',
+        description: 'Your resume has been downloaded and saved to your account.',
+        status: 'success',
+        duration: 4000,
+      });
       
     } catch (error) {
       console.error('Error generating PDF:', error);
-      alert(`Error generating PDF: ${error.message}. Please try again.`);
+      addNotification({
+        title: 'PDF Generation Failed',
+        description: `Error generating PDF: ${error.message}. Please try again.`,
+        status: 'error',
+        duration: 5000,
+      });
     }
   };
 

@@ -15,11 +15,12 @@ import { useUser, SignedIn, SignedOut } from '@clerk/nextjs';
 import { FaPlus, FaEdit, FaTrash, FaDownload, FaEye } from 'react-icons/fa';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 
 interface Resume {
   id: string;
   title: string;
-  createdAt: string;
+  addNotificationdAt: string;
   updatedAt: string;
   atsScore?: number;
   personalInfo?: any;
@@ -27,6 +28,7 @@ interface Resume {
 
 export default function Dashboard() {
   const { user, isLoaded } = useUser();
+  const { addNotification } = useNotificationContext();
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -264,11 +266,21 @@ export default function Dashboard() {
       pdf.save(fileName);
       
       console.log('PDF generated successfully:', fileName);
-      alert('Resume PDF downloaded successfully!');
+      addNotification({
+        title: 'PDF Downloaded Successfully!',
+        description: 'Your resume has been downloaded successfully.',
+        status: 'success',
+        duration: 4000,
+      });
       
     } catch (error) {
       console.error('Error generating PDF:', error);
-      alert(`Error generating PDF: ${error.message}. Please try again.`);
+      addNotification({
+        title: 'PDF Generation Failed',
+        description: `Error generating PDF: ${error.message}. Please try again.`,
+        status: 'error',
+        duration: 5000,
+      });
     }
   };
 

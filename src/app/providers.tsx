@@ -2,6 +2,8 @@
 
 import { ChakraProvider, createSystem, defaultConfig } from '@chakra-ui/react';
 import { ClerkProvider } from '@clerk/nextjs';
+import { NotificationProvider } from '@/contexts/NotificationContext';
+import { NotificationContainer } from '@/components/NotificationContainer';
 
 const system = createSystem(defaultConfig, {
   theme: {
@@ -32,7 +34,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
       <ChakraProvider value={system}>
-        {children}
+        <NotificationProvider>
+          {children}
+          <NotificationContainer />
+        </NotificationProvider>
       </ChakraProvider>
     </ClerkProvider>
   );

@@ -14,8 +14,21 @@ import {
 import { SignInButton, SignUpButton, UserButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { FaFileAlt, FaRobot, FaSearch, FaDownload } from 'react-icons/fa';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+// Custom hook to handle client-side animations safely
+function useClientSide() {
+  const [isClient, setIsClient] = useState(false);
+  
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  
+  return isClient;
+}
 
 export default function Home() {
+  const isClient = useClientSide();
 
   const features = [
     {
@@ -72,23 +85,7 @@ export default function Home() {
       <Box flex="1" display="flex" alignItems="center" justifyContent="center" py={20}>
         <Container maxW="container.xl">
           <Stack gap={8} textAlign="center" alignItems="center">
-            <Box
-              opacity={0}
-              transform="translateY(40px)"
-              animation="fadeInUp 1s ease-out 0.2s forwards"
-              css={{
-                '@keyframes fadeInUp': {
-                  '0%': {
-                    opacity: 0,
-                    transform: 'translateY(40px)'
-                  },
-                  '100%': {
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                  }
-                }
-              }}
-            >
+            <Box>
               <Heading 
                 size="2xl" 
                 color="brand.500" 
@@ -102,45 +99,12 @@ export default function Home() {
                 Build Your First Resume with AI Guidance
               </Heading>
             </Box>
-            <Box
-              opacity={0}
-              transform="translateY(30px)"
-              animation="fadeInUp 1s ease-out 0.4s forwards"
-              css={{
-                '@keyframes fadeInUp': {
-                  '0%': {
-                    opacity: 0,
-                    transform: 'translateY(30px)'
-                  },
-                  '100%': {
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                  }
-                }
-              }}
-            >
+            <Box>
               <Text fontSize="xl" color="gray.600" maxW="2xl">
                 Perfect for students aged 12-16! Get AI-powered guidance to create your first professional resume. 
-
               </Text>
             </Box>
-            <Box
-              opacity={0}
-              transform="translateY(20px)"
-              animation="fadeInUp 1s ease-out 0.6s forwards"
-              css={{
-                '@keyframes fadeInUp': {
-                  '0%': {
-                    opacity: 0,
-                    transform: 'translateY(20px)'
-                  },
-                  '100%': {
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                  }
-                }
-              }}
-            >
+            <Box>
               <Stack gap={4}>
                 <SignedIn>
                   <Link href="/dashboard">
@@ -200,23 +164,7 @@ export default function Home() {
       <Box bg="brand.50" py={16}>
         <Container maxW="container.xl">
           <Stack gap={8} textAlign="center" alignItems="center">
-            <Box
-              opacity={0}
-              transform="translateY(30px)"
-              animation="fadeInUp 0.8s ease-out 0.2s forwards"
-              css={{
-                '@keyframes fadeInUp': {
-                  '0%': {
-                    opacity: 0,
-                    transform: 'translateY(30px)'
-                  },
-                  '100%': {
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                  }
-                }
-              }}
-            >
+            <Box>
               <Heading size="xl" color="brand.600" maxW="4xl">
                 Designed Specifically for Young Students
               </Heading>
@@ -225,23 +173,7 @@ export default function Home() {
                 to professional bullet points that match any job description.
               </Text>
             </Box>
-            <Box
-              opacity={0}
-              transform="translateY(20px)"
-              animation="fadeInUp 0.8s ease-out 0.4s forwards"
-              css={{
-                '@keyframes fadeInUp': {
-                  '0%': {
-                    opacity: 0,
-                    transform: 'translateY(20px)'
-                  },
-                  '100%': {
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                  }
-                }
-              }}
-            >
+            <Box>
               <Text fontSize="md" color="brand.600" maxW="2xl">
                 ✨ Perfect for ages 12-16 • 🎯 AI-powered job matching • 📊 ATS score feedback • 🚀 Land your first opportunity
               </Text>
@@ -254,23 +186,7 @@ export default function Home() {
       <Box bg="gray.50" py={20}>
         <Container maxW="container.xl">
           <Stack gap={12} textAlign="center" alignItems="center">
-            <Box
-              opacity={0}
-              transform="translateY(30px)"
-              animation="fadeInUp 0.8s ease-out forwards"
-              css={{
-                '@keyframes fadeInUp': {
-                  '0%': {
-                    opacity: 0,
-                    transform: 'translateY(30px)'
-                  },
-                  '100%': {
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                  }
-                }
-              }}
-            >
+            <Box>
               <Heading size="xl" maxW="3xl">
                 Everything Young Students Need for Their First Resume
               </Heading>
@@ -284,9 +200,6 @@ export default function Home() {
                   p={6} 
                   borderRadius="md" 
                   textAlign="center"
-                  opacity={0}
-                  transform="translateY(50px)"
-                  animation={`fadeInUp 0.6s ease-out ${index * 0.1 + 0.3}s forwards`}
                   _hover={{
                     transform: 'translateY(-8px) scale(1.02)',
                     shadow: 'xl',
@@ -309,18 +222,6 @@ export default function Home() {
                     background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
                     transition: 'left 0.5s'
                   }}
-css={{
-                '@keyframes fadeInUp': {
-                  '0%': {
-                    opacity: 0,
-                    transform: 'translateY(50px)'
-                  },
-                  '100%': {
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                  }
-                }
-              }}
                 >
                   <Box 
                     mb={4}
@@ -373,23 +274,7 @@ css={{
       <Box bg="brand.500" color="white" py={20}>
         <Container maxW="container.xl">
           <Stack gap={6} textAlign="center" alignItems="center">
-            <Box
-              opacity={0}
-              transform="translateY(30px)"
-              animation="fadeInUp 0.8s ease-out 0.2s forwards"
-              css={{
-                '@keyframes fadeInUp': {
-                  '0%': {
-                    opacity: 0,
-                    transform: 'translateY(30px)'
-                  },
-                  '100%': {
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                  }
-                }
-              }}
-            >
+            <Box>
               <Heading 
                 size="xl" 
                 maxW="3xl"
@@ -402,45 +287,13 @@ css={{
                 Ready to Create Your First Professional Resume?
               </Heading>
             </Box>
-            <Box
-              opacity={0}
-              transform="translateY(20px)"
-              animation="fadeInUp 0.8s ease-out 0.4s forwards"
-              css={{
-                '@keyframes fadeInUp': {
-                  '0%': {
-                    opacity: 0,
-                    transform: 'translateY(20px)'
-                  },
-                  '100%': {
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                  }
-                }
-              }}
-            >
+            <Box>
               <Text fontSize="lg" maxW="2xl">
                 Join hundreds of students who have successfully created their first resumes 
                 and landed amazing opportunities with our AI-powered guidance.
               </Text>
             </Box>
-            <Box
-              opacity={0}
-              transform="translateY(20px)"
-              animation="fadeInUp 0.8s ease-out 0.6s forwards"
-              css={{
-                '@keyframes fadeInUp': {
-                  '0%': {
-                    opacity: 0,
-                    transform: 'translateY(20px)'
-                  },
-                  '100%': {
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                  }
-                }
-              }}
-            >
+            <Box>
               <SignedOut>
                 <SignUpButton mode="modal">
                     <Button 
