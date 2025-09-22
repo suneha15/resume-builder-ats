@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const { userId } = auth();
+    const { userId } = await auth();
     let actualUserId = userId;
 
     // If auth() doesn't work, try currentUser()
@@ -62,7 +62,7 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
-    const { userId } = auth();
+    const { userId } = await auth();
     let actualUserId = userId;
 
     // If auth() doesn't work, try currentUser()
@@ -135,7 +135,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const { userId } = auth();
+    const { userId } = await auth();
     let actualUserId = userId;
 
     // If auth() doesn't work, try currentUser()
