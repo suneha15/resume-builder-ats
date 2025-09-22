@@ -470,7 +470,7 @@ export default function ResumeBuilder() {
       setCurrentSection('preview');
       loadResumeForPreview(resumeId);
     }
-  }, [searchParams]);
+  }, [searchParams, loadResumeForPreview]);
 
   // Load resume data for preview
   const loadResumeForPreview = useCallback(async (resumeId: string) => {
@@ -552,7 +552,7 @@ export default function ResumeBuilder() {
     } finally {
       setIsLoadingPreview(false);
     }
-  }, []);
+  }, [addNotification]);
 
   // Clear AI suggestions when switching sections
   useEffect(() => {
@@ -1666,7 +1666,7 @@ export default function ResumeBuilder() {
                       • Include any specific software or tools mentioned
                     </Text>
                     <Text fontSize="sm" color="gray.600">
-                      • Don't worry about formatting - just paste the raw text
+                      • Don&apos;t worry about formatting - just paste the raw text
                     </Text>
                   </VStack>
                 </Box>

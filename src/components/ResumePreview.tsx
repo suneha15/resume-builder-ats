@@ -60,8 +60,8 @@ export default function ResumePreview({
   education,
   skills,
   aiSuggestions,
-  onEdit,
-  onDownload
+  onEdit: _,
+  onDownload: __
 }: ResumePreviewProps) {
 
   const formatDate = (dateString: string) => {
