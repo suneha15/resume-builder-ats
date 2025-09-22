@@ -5,10 +5,8 @@ import {
   HStack,
   Heading,
   Text,
-  Badge,
-  Button
+  Badge
 } from '@chakra-ui/react';
-import { FaDownload, FaEdit } from 'react-icons/fa';
 
 interface PersonalInfo {
   firstName: string;
@@ -82,21 +80,6 @@ export default function ResumePreview({
     }
   };
 
-  const handleDownload = () => {
-    if (onDownload) {
-      onDownload();
-    } else {
-      console.log('Download PDF');
-    }
-  };
-
-  const handleEdit = () => {
-    if (onEdit) {
-      onEdit();
-    } else {
-      console.log('Edit resume');
-    }
-  };
 
   return (
     <Box>

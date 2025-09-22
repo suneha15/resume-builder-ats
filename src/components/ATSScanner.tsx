@@ -7,7 +7,6 @@ import {
   Text,
   Textarea,
   Button,
-  Progress,
   Badge,
   VStack,
 } from '@chakra-ui/react';

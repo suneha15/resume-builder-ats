@@ -17,13 +17,23 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 
+interface PersonalInfo {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  location?: string;
+  linkedin?: string;
+  website?: string;
+}
+
 interface Resume {
   id: string;
   title: string;
-  addNotificationdAt: string;
+  createdAt: string;
   updatedAt: string;
   atsScore?: number;
-  personalInfo?: any;
+  personalInfo?: PersonalInfo;
 }
 
 export default function Dashboard() {

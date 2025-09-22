@@ -12,7 +12,7 @@ import {
 import { useUser, SignedIn, SignedOut } from '@clerk/nextjs';
 import { FaArrowLeft, FaSave, FaEye, FaDownload, FaRobot, FaEdit } from 'react-icons/fa';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ATSScanner from '@/components/ATSScanner';
 import ResumePreview from '@/components/ResumePreview';
@@ -473,7 +473,7 @@ export default function ResumeBuilder() {
   }, [searchParams]);
 
   // Load resume data for preview
-  const loadResumeForPreview = async (resumeId: string) => {
+  const loadResumeForPreview = useCallback(async (resumeId: string) => {
     console.log('Loading resume for preview, ID:', resumeId);
     setIsLoadingPreview(true);
     try {
@@ -552,7 +552,7 @@ export default function ResumeBuilder() {
     } finally {
       setIsLoadingPreview(false);
     }
-  };
+  }, []);
 
   // Clear AI suggestions when switching sections
   useEffect(() => {
@@ -890,35 +890,6 @@ export default function ResumeBuilder() {
     }
   };
 
-  // Load resume from database
-  const loadResume = async (resumeId: string) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`/api/resumes/${resumeId}`);
-      if (response.ok) {
-        const { resume } = await response.json();
-        setPersonalInfo(resume.personalInfo || {});
-        setExperiences(resume.experiences || []);
-        setEducation(resume.education || []);
-        setSkills(resume.skills || []);
-        setJobDescription(resume.jobDescription || '');
-        setAiSuggestions(resume.aiSuggestions || '');
-        setCurrentResumeId(resumeId);
-        setIsNewResume(false);
-        setSaveStatus('Resume loaded successfully!');
-        setTimeout(() => setSaveStatus(''), 3000);
-      } else {
-        setSaveStatus('Error loading resume');
-        setTimeout(() => setSaveStatus(''), 3000);
-      }
-    } catch (error) {
-      console.error('Error loading resume:', error);
-      setSaveStatus('Error loading resume');
-      setTimeout(() => setSaveStatus(''), 3000);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   // Save resume to database
   const handleSave = async () => {
@@ -1052,8 +1023,6 @@ export default function ResumeBuilder() {
     try {
       console.log('Generating PDF and attempting to save to database...');
       
-      let databaseSaveSuccess = false;
-      let saveMessage = '';
       
       // First, try to save the resume to the database
       try {
@@ -1084,25 +1053,13 @@ export default function ResumeBuilder() {
           console.log('Resume saved to database:', resume.id);
           setCurrentResumeId(resume.id);
           setIsNewResume(false);
-          databaseSaveSuccess = true;
-          saveMessage = 'Resume PDF downloaded and saved to your account!';
         } else if (response.status === 401) {
           console.log('User not logged in - saving to local storage only');
-          databaseSaveSuccess = false;
-          saveMessage = 'Resume PDF downloaded! (Not saved to account - please sign in to save)';
         } else {
           console.error('Failed to save resume to database:', response.status);
-          databaseSaveSuccess = false;
-          saveMessage = 'Resume PDF downloaded! (Database save failed - saved locally)';
         }
       } catch (dbError) {
         console.error('Database save error:', dbError);
-        databaseSaveSuccess = false;
-        if (dbError.message.includes('Network error')) {
-          saveMessage = 'Resume PDF downloaded! (Server unavailable - saved locally)';
-        } else {
-          saveMessage = 'Resume PDF downloaded! (Database unavailable - saved locally)';
-        }
       }
       
       // Always save to local storage as backup
@@ -1765,7 +1722,7 @@ export default function ResumeBuilder() {
                 <Box textAlign="center" py={8}>
                   <Text color="gray.500" mb={4}>No work experience added yet</Text>
                   <Text fontSize="sm" color="gray.600" mb={4}>
-                    Don't worry! Even if you haven't had a formal job, you can include:
+                    Don&apos;t worry! Even if you haven&apos;t had a formal job, you can include:
                   </Text>
                   <VStack gap={2} align="start" mb={6}>
                     <Text fontSize="sm" color="gray.600">• Volunteer work</Text>
@@ -2042,7 +1999,7 @@ export default function ResumeBuilder() {
                 <Box textAlign="center" py={8}>
                   <Text color="gray.500" mb={4}>No skills added yet</Text>
                   <Text fontSize="sm" color="gray.600" mb={4}>
-                    Think about what you're good at! Include both technical and soft skills:
+                    Think about what you&apos;re good at! Include both technical and soft skills:
                   </Text>
                   <VStack gap={2} align="start" mb={6}>
                     <Text fontSize="sm" color="gray.600">• Computer skills (Microsoft Office, Google Docs)</Text>

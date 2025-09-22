@@ -14,21 +14,8 @@ import {
 import { SignInButton, SignUpButton, UserButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { FaFileAlt, FaRobot, FaSearch, FaDownload } from 'react-icons/fa';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-
-// Custom hook to handle client-side animations safely
-function useClientSide() {
-  const [isClient, setIsClient] = useState(false);
-  
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-  
-  return isClient;
-}
 
 export default function Home() {
-  const isClient = useClientSide();
 
   const features = [
     {
