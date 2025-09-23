@@ -27,6 +27,24 @@ interface PersonalInfo {
   website?: string;
 }
 
+interface Experience {
+  company: string;
+  position: string;
+  description?: string;
+  startDate?: string;
+  endDate?: string;
+  current?: boolean;
+}
+
+interface Education {
+  institution: string;
+  degree: string;
+  field: string;
+  gpa?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
 interface Resume {
   id: string;
   title: string;
@@ -155,7 +173,7 @@ export default function Dashboard() {
         pdf.text('PROFESSIONAL EXPERIENCE', 20, yPosition);
         yPosition += 12;
         
-        resume.experiences.forEach(exp => {
+        resume.experiences.forEach((exp: Experience) => {
           if (exp.company && exp.position) {
             pdf.setFontSize(12);
             pdf.setFont('helvetica', 'bold');
@@ -193,7 +211,7 @@ export default function Dashboard() {
         pdf.text('EDUCATION', 20, yPosition);
         yPosition += 12;
         
-        resume.education.forEach(edu => {
+        resume.education.forEach((edu: Education) => {
           if (edu.institution && edu.degree) {
             pdf.setFontSize(12);
             pdf.setFont('helvetica', 'bold');
