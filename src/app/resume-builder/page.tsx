@@ -461,17 +461,6 @@ export default function ResumeBuilder() {
   const [editingSkill, setEditingSkill] = useState<Skill | null>(null);
   const [isLoadingPreview, setIsLoadingPreview] = useState(false);
 
-  // Check for preview mode from URL parameters and load resume data
-  useEffect(() => {
-    const isPreviewMode = searchParams.get('preview') === 'true';
-    const resumeId = searchParams.get('resumeId');
-    
-    if (isPreviewMode && resumeId) {
-      setCurrentSection('preview');
-      loadResumeForPreview(resumeId);
-    }
-  }, [searchParams, loadResumeForPreview]);
-
   // Load resume data for preview
   const loadResumeForPreview = useCallback(async (resumeId: string) => {
     console.log('Loading resume for preview, ID:', resumeId);
@@ -553,6 +542,17 @@ export default function ResumeBuilder() {
       setIsLoadingPreview(false);
     }
   }, [addNotification]);
+
+  // Check for preview mode from URL parameters and load resume data
+  useEffect(() => {
+    const isPreviewMode = searchParams.get('preview') === 'true';
+    const resumeId = searchParams.get('resumeId');
+    
+    if (isPreviewMode && resumeId) {
+      setCurrentSection('preview');
+      loadResumeForPreview(resumeId);
+    }
+  }, [searchParams, loadResumeForPreview]);
 
   // Clear AI suggestions when switching sections
   useEffect(() => {
@@ -1264,7 +1264,7 @@ export default function ResumeBuilder() {
       console.error('Error generating PDF:', error);
       addNotification({
         title: 'PDF Generation Failed',
-        description: `Error generating PDF: ${error.message}. Please try again.`,
+        description: `Error generating PDF: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again.`,
         status: 'error',
         duration: 5000,
       });
@@ -1680,10 +1680,9 @@ export default function ResumeBuilder() {
                 <Heading size="md">Work Experience</Heading>
                 <HStack gap={2}>
                   <Button 
-                    size="sm" 
+                    size="sm"
                     variant="outline" 
                     colorScheme="brand"
-                    leftIcon={<FaRobot />}
                     onClick={() => generateAISuggestions('experience')}
                     loading={isGeneratingSuggestions}
                   >
@@ -1858,10 +1857,9 @@ export default function ResumeBuilder() {
                 <Heading size="md">Education</Heading>
                 <HStack gap={2}>
                   <Button 
-                    size="sm" 
+                    size="sm"
                     variant="outline" 
                     colorScheme="brand"
-                    leftIcon={<FaRobot />}
                     onClick={() => generateAISuggestions('education')}
                     loading={isGeneratingSuggestions}
                   >
@@ -1957,10 +1955,9 @@ export default function ResumeBuilder() {
                 <Heading size="md">Skills</Heading>
                 <HStack gap={2}>
                   <Button 
-                    size="sm" 
+                    size="sm"
                     variant="outline" 
                     colorScheme="brand"
-                    leftIcon={<FaRobot />}
                     onClick={() => generateAISuggestions('skills')}
                     loading={isGeneratingSuggestions}
                   >

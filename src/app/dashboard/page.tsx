@@ -257,7 +257,7 @@ export default function Dashboard() {
         pdf.setFont('helvetica', 'normal');
         
         // Group skills by level
-        const skillsByLevel = resume.skills.reduce((acc, skill) => {
+        const skillsByLevel = resume.skills.reduce((acc: Record<string, string[]>, skill: any) => {
           if (!acc[skill.level]) acc[skill.level] = [];
           acc[skill.level].push(skill.name);
           return acc;
@@ -269,7 +269,7 @@ export default function Dashboard() {
           yPosition += 6;
           
           pdf.setFont('helvetica', 'normal');
-          const skillText = skillNames.join(', ');
+          const skillText = (skillNames as string[]).join(', ');
           const splitSkills = pdf.splitTextToSize(skillText, 170);
           pdf.text(splitSkills, 25, yPosition);
           yPosition += splitSkills.length * 4 + 8;
@@ -305,7 +305,7 @@ export default function Dashboard() {
       console.error('Error generating PDF:', error);
       addNotification({
         title: 'PDF Generation Failed',
-        description: `Error generating PDF: ${error.message}. Please try again.`,
+        description: `Error generating PDF: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again.`,
         status: 'error',
         duration: 5000,
       });
@@ -413,7 +413,7 @@ export default function Dashboard() {
                     </Button>
                     <IconButton
                       aria-label="Delete resume"
-                      icon={<FaTrash />}
+                      children={<FaTrash />}
                       size="sm"
                       colorScheme="red"
                       variant="outline"

@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Alert, AlertIndicator, AlertTitle, AlertDescription, CloseButton, VStack } from '@chakra-ui/react';
+import { Box, CloseButton, Stack } from '@chakra-ui/react';
 import { useNotification } from '@/hooks/useNotification';
 
 export function NotificationContainer() {
@@ -16,24 +16,25 @@ export function NotificationContainer() {
       zIndex={9999}
       maxW="400px"
     >
-      <VStack spacing={2} align="stretch">
+      <Stack direction="column" gap={2} align="stretch">
         {notifications.map((notification) => (
-          <Alert
+          <Box
             key={notification.id}
-            status={notification.status}
-            variant="solid"
+            bg={notification.status === 'error' ? 'red.500' : notification.status === 'success' ? 'green.500' : notification.status === 'warning' ? 'yellow.500' : 'blue.500'}
+            color="white"
+            p={4}
             borderRadius="md"
             boxShadow="lg"
             maxW="400px"
+            position="relative"
           >
-            <AlertIndicator />
             <Box flex="1">
-              <AlertTitle fontSize="sm" fontWeight="bold">
+              <Box fontSize="sm" fontWeight="bold" mb={1}>
                 {notification.title}
-              </AlertTitle>
-              <AlertDescription fontSize="sm">
+              </Box>
+              <Box fontSize="sm">
                 {notification.description}
-              </AlertDescription>
+              </Box>
             </Box>
             <CloseButton
               size="sm"
@@ -41,10 +42,11 @@ export function NotificationContainer() {
               position="absolute"
               right="8px"
               top="8px"
+              color="white"
             />
-          </Alert>
+          </Box>
         ))}
-      </VStack>
+      </Stack>
     </Box>
   );
 }

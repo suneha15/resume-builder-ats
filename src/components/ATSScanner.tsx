@@ -19,8 +19,8 @@ interface PersonalInfo {
   email: string;
   phone: string;
   location: string;
-  linkedin: string;
-  website: string;
+  linkedin?: string;
+  website?: string;
 }
 
 interface Experience {
