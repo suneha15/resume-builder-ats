@@ -5,8 +5,8 @@ import { prisma } from '@/lib/prisma';
 // GET /api/resumes - Get all resumes for user
 export async function GET() {
   try {
-    const { userId } = auth();
-    let actualUserId = userId;
+    const { userId } = await auth();
+    let actualUserId: string | null | undefined = userId;
     
     // If auth() doesn't work, try currentUser()
     if (!actualUserId) {
@@ -53,10 +53,10 @@ export async function GET() {
 // POST /api/resumes - Create new resume
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     console.log('API Route - User ID from auth():', userId);
     
-    let actualUserId = userId;
+    let actualUserId: string | null | undefined = userId;
     
     // If auth() doesn't work, try currentUser()
     if (!actualUserId) {

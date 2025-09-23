@@ -10,7 +10,7 @@ export async function GET(
   try {
     const { id } = await params;
     const { userId } = await auth();
-    let actualUserId = userId;
+    let actualUserId: string | null | undefined = userId;
 
     // If auth() doesn't work, try currentUser()
     if (!actualUserId) {
@@ -63,7 +63,7 @@ export async function PUT(
   try {
     const { id } = await params;
     const { userId } = await auth();
-    let actualUserId = userId;
+    let actualUserId: string | null | undefined = userId;
 
     // If auth() doesn't work, try currentUser()
     if (!actualUserId) {
@@ -136,7 +136,7 @@ export async function DELETE(
   try {
     const { id } = await params;
     const { userId } = await auth();
-    let actualUserId = userId;
+    let actualUserId: string | null | undefined = userId;
 
     // If auth() doesn't work, try currentUser()
     if (!actualUserId) {
