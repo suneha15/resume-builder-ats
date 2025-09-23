@@ -646,53 +646,6 @@ export default function ResumeBuilder() {
       markSectionAsSaved(currentSection);
       setSaveStatus(`${currentSection} section saved to local storage!`);
       
-      // Optionally save to database (but don't fail if it doesn't work)
-      try {
-        if (isNewResume) {
-          // Create new resume in database
-          const response = await fetch('/api/resumes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              personalInfo,
-              experiences,
-              education,
-              skills,
-              jobDescription,
-              aiSuggestions
-            })
-          });
-
-          if (response.ok) {
-            const { resume } = await response.json();
-            setCurrentResumeId(resume.id);
-            setIsNewResume(false);
-            setSaveStatus(`${currentSection} section saved locally and to database!`);
-          }
-        } else if (currentResumeId) {
-          // Update existing resume in database
-          const response = await fetch(`/api/resumes/${currentResumeId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              personalInfo,
-              experiences,
-              education,
-              skills,
-              jobDescription,
-              aiSuggestions
-            })
-          });
-
-          if (response.ok) {
-            setSaveStatus(`${currentSection} section saved locally and to database!`);
-          }
-        }
-      } catch (dbError) {
-        console.log('Database save failed, but local save succeeded:', dbError);
-        // Don't show error to user since local save worked
-      }
-      
     } catch (error) {
       console.error('Error saving section:', error);
       setSaveStatus(`Error saving ${currentSection} section`);
@@ -906,6 +859,17 @@ export default function ResumeBuilder() {
         aiSuggestions
       };
 
+      // First save to localStorage
+      const localStorageData = {
+        ...resumeData,
+        currentSection,
+        currentResumeId,
+        isNewResume,
+        lastSaved: new Date().toISOString()
+      };
+      localStorage.setItem('resume-data', JSON.stringify(localStorageData));
+
+      // Then save to database
       let response;
       if (isNewResume) {
         // Create new resume
@@ -927,6 +891,12 @@ export default function ResumeBuilder() {
         const { resume } = await response.json();
         setCurrentResumeId(resume.id);
         setIsNewResume(false);
+        
+        // Clear all unsaved changes and mark all sections as saved
+        setUnsavedChanges(new Set());
+        const allSections: Section[] = ['contact', 'job-description', 'experience', 'education', 'skills', 'summary', 'ats'];
+        allSections.forEach(section => markSectionAsSaved(section));
+        
         setSaveStatus('Resume saved to database successfully!');
         setTimeout(() => setSaveStatus(''), 3000);
         
@@ -1053,6 +1023,11 @@ export default function ResumeBuilder() {
           console.log('Resume saved to database:', resume.id);
           setCurrentResumeId(resume.id);
           setIsNewResume(false);
+          
+          // Clear all unsaved changes and mark all sections as saved
+          setUnsavedChanges(new Set());
+          const allSections: Section[] = ['contact', 'job-description', 'experience', 'education', 'skills', 'summary', 'ats'];
+          allSections.forEach(section => markSectionAsSaved(section));
         } else if (response.status === 401) {
           console.log('User not logged in - saving to local storage only');
         } else {

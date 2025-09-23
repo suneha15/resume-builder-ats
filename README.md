@@ -23,9 +23,44 @@ A modern Next.js application specifically designed for students aged 12-16 to cr
 - 👁️ **Resume Preview** - Preview saved resumes in read-only mode
 - ✏️ **Edit & Update** - Edit existing resumes with full CRUD functionality
 - 🗑️ **Delete Management** - Remove resumes with confirmation
-- 💾 **Hybrid Storage** - localStorage backup + database persistence
+- 💾 **Smart Data Saving** - Section-based localStorage + full resume database persistence
 - 🎨 **Modern UI** - Beautiful Chakra UI v3 components with animations
 - 📊 **Real-time Feedback** - Visual indicators for unsaved changes and AI suggestions
+
+## 💾 Data Saving & Persistence
+
+### How Your Data is Saved
+
+The resume builder uses a **two-tier saving system** to ensure your work is never lost:
+
+#### 🔄 **Section-Level Saving (Temporary)**
+- **Auto-save**: As you type, data is automatically saved to your browser's localStorage
+- **Manual Save**: Click "Save" in any section to save that section's data to localStorage
+- **Session Persistence**: Data survives browser refreshes and accidental closures
+- **Visual Indicators**: Unsaved changes are highlighted with visual cues
+
+#### 🗄️ **Full Resume Saving (Permanent)**
+- **Database Save**: When you click "Save Resume" or "Generate PDF", your complete resume is saved to the database
+- **Dashboard Access**: Saved resumes appear on your dashboard for future access
+- **Cross-Device Sync**: Access your saved resumes from any device when logged in
+- **Permanent Storage**: Resumes are permanently stored and can be edited or downloaded anytime
+
+### 📋 **Saving Flow Summary**
+
+| Action | localStorage | Database | Dashboard Access |
+|--------|-------------|----------|------------------|
+| **Type in any field** | ✅ Auto-save | ❌ No | ❌ No |
+| **Click "Save" in section** | ✅ Manual save | ❌ No | ❌ No |
+| **Click "Save Resume"** | ✅ Save | ✅ Save | ✅ Yes |
+| **Click "Generate PDF"** | ✅ Save | ✅ Save | ✅ Yes |
+
+### 🎯 **Key Benefits**
+
+- **No Data Loss**: Your work is always preserved in localStorage
+- **Flexible Workflow**: Save sections as you go, or work continuously
+- **Permanent Backup**: Full resumes are saved to database for long-term access
+- **Dashboard Management**: View, edit, and manage all your saved resumes
+- **Cross-Device Access**: Your saved resumes are available on any device
 
 ## 🛠️ Tech Stack
 
@@ -125,12 +160,13 @@ Dashboard → Click Preview → Load resume data → Display in read-only mode �
 ## 🎯 Usage Guide
 
 ### Dashboard Features
-- **View All Resumes** - See all your saved resumes with titles and dates
+- **View All Resumes** - See all your saved resumes with titles, dates, and ATS scores
 - **Create New Resume** - Start building a new resume from scratch
-- **Edit Resume** - Modify existing resumes
+- **Edit Resume** - Modify existing resumes (opens in resume builder)
 - **Preview Resume** - View resume in read-only mode
 - **Download PDF** - Generate and download resume as PDF
 - **Delete Resume** - Remove resumes with confirmation
+- **Resume Management** - Access all your permanently saved resumes from any device
 
 ### Resume Builder Features
 - **Section Navigation** - Horizontal navigation between sections
@@ -142,6 +178,8 @@ Dashboard → Click Preview → Load resume data → Display in read-only mode �
 - **AI Suggestions** - Get personalized recommendations based on job description
 - **ATS Scanner** - Analyze resume compatibility
 - **Preview** - See final resume before downloading
+- **Smart Saving** - Section-level saves to localStorage + full resume saves to database
+- **Dashboard Integration** - Saved resumes automatically appear on your dashboard
 
 ### AI Features
 - **Smart Suggestions** - AI-powered recommendations for each section
