@@ -257,7 +257,7 @@ export default function Dashboard() {
         pdf.setFont('helvetica', 'normal');
         
         // Group skills by level
-        const skillsByLevel = resume.skills.reduce((acc: Record<string, string[]>, skill: any) => {
+        const skillsByLevel = resume.skills.reduce((acc: Record<string, string[]>, skill: { level: string; name: string }) => {
           if (!acc[skill.level]) acc[skill.level] = [];
           acc[skill.level].push(skill.name);
           return acc;
@@ -413,12 +413,13 @@ export default function Dashboard() {
                     </Button>
                     <IconButton
                       aria-label="Delete resume"
-                      children={<FaTrash />}
                       size="sm"
                       colorScheme="red"
                       variant="outline"
                       onClick={() => handleDeleteResume(resume.id)}
-                    />
+                    >
+                      <FaTrash />
+                    </IconButton>
                   </HStack>
                 </Box>
               </Box>

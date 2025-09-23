@@ -10,10 +10,9 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { useUser, SignedIn, SignedOut } from '@clerk/nextjs';
-import { FaArrowLeft, FaSave, FaEye, FaDownload, FaRobot, FaEdit } from 'react-icons/fa';
+import { FaArrowLeft, FaSave, FaEye, FaDownload, FaEdit } from 'react-icons/fa';
 import Link from 'next/link';
 import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams } from 'next/navigation';
 import ATSScanner from '@/components/ATSScanner';
 import ResumePreview from '@/components/ResumePreview';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -425,7 +424,6 @@ function SkillForm({
 
 export default function ResumeBuilder() {
   const { user, isLoaded } = useUser();
-  const searchParams = useSearchParams();
   const { addNotification } = useNotificationContext();
   
   // Form state
@@ -545,14 +543,15 @@ export default function ResumeBuilder() {
 
   // Check for preview mode from URL parameters and load resume data
   useEffect(() => {
-    const isPreviewMode = searchParams.get('preview') === 'true';
-    const resumeId = searchParams.get('resumeId');
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPreviewMode = urlParams.get('preview') === 'true';
+    const resumeId = urlParams.get('resumeId');
     
     if (isPreviewMode && resumeId) {
       setCurrentSection('preview');
       loadResumeForPreview(resumeId);
     }
-  }, [searchParams, loadResumeForPreview]);
+  }, [loadResumeForPreview]);
 
   // Clear AI suggestions when switching sections
   useEffect(() => {
@@ -575,7 +574,8 @@ export default function ResumeBuilder() {
 
   // Load data from localStorage on component mount (fallback) - but not in preview mode
   useEffect(() => {
-    const isPreviewMode = searchParams.get('preview') === 'true';
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPreviewMode = urlParams.get('preview') === 'true';
     if (isPreviewMode) {
       // Don't load from localStorage in preview mode - let the preview data load instead
       return;
@@ -600,7 +600,7 @@ export default function ResumeBuilder() {
         setSaveStatus('Error loading saved data');
       }
     }
-  }, [searchParams]);
+  }, []);
 
   // Auto-save data to localStorage whenever form data changes
   useEffect(() => {
@@ -2149,4 +2149,4 @@ export default function ResumeBuilder() {
       </SignedIn>
     </Box>
   );
-} 
+}
